@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Md Shahidul Islam Sabbir &mdash; Interface, Systems &amp; Encounter Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+
+    --bg: #17140F;
+    --bg-panel: #211D16;
+    --bg-elevated: #2A251C;
+    --border: #362F23;
+    --text: #EDE6D8;
+    --text-muted: #A79C89;
+    --text-faint: #6F6656;
+    --accent-rust: #C1571E;
+    --accent-rust-soft: #C1571E22;
+    --accent-steel: #7E97A1;
+    --accent-steel-soft: #7E97A122;
+    --accent-moss: #97A85F;
+    --accent-moss-soft: #97A85F22;
+
+    --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+    --font-body: 'Inter', 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17140F; --bg-panel: #211D16; --bg-elevated: #2A251C; --border: #362F23;
+      --text: #EDE6D8; --text-muted: #A79C89; --text-faint: #6F6656;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17140F; --bg-panel: #211D16; --bg-elevated: #2A251C; --border: #362F23;
+    --text: #EDE6D8; --text-muted: #A79C89; --text-faint: #6F6656;
+  }
+  html { scroll-padding-top: 84px; scroll-behavior: smooth; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img, svg { max-width: 100%; }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+  .prose { max-width: 640px; }
+
+  a { color: inherit; }
+
+  /* ---------- Nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    padding-top: env(safe-area-inset-top, 0px);
+    background: rgba(23,20,15,0.88);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-name { font-family: var(--font-display); font-weight: 600; font-size: 17px; letter-spacing: 0.01em; }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a { color: var(--text-muted); font-size: 14.5px; text-decoration: none; transition: color .15s; }
+  .nav-links a:hover, .nav-links a:focus-visible { color: var(--text); }
+
+  /* ---------- Hero ---------- */
+  header.hero { padding: 76px 0 54px; }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; align-items: start;
+  }
+  h1.title {
+    font-family: var(--font-display);
+    font-size: clamp(38px, 5.6vw, 56px);
+    line-height: 1.06;
+    margin: 0 0 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .hero-lede { font-size: 19px; color: var(--text-muted); max-width: 48ch; margin: 0 0 28px; }
+  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 11px 20px; border-radius: 5px;
+    font-size: 14.5px; font-weight: 500; text-decoration: none;
+    border: 1px solid var(--border);
+    transition: border-color .15s, background .15s;
+  }
+  .btn-primary { background: var(--accent-rust); border-color: var(--accent-rust); color: #17140F; font-weight: 600; }
+  .btn-primary:hover { background: #d6631f; }
+  .btn-ghost { color: var(--text); }
+  .btn-ghost:hover { border-color: var(--text-muted); }
+
+  /* stat panel */
+  .stat-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px 24px;
+  }
+  .stat-panel-head {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-row {
+    display: grid; grid-template-columns: 104px 1fr;
+    gap: 12px; padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14.5px;
+  }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-key { font-family: var(--font-mono); font-size: 12px; color: var(--text-faint); padding-top: 2px; }
+  .stat-val { color: var(--text); }
+
+  /* ---------- Metrics strip ---------- */
+  .metrics {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--border); border-radius: 8px;
+    background: var(--bg-panel);
+    overflow: hidden;
+  }
+  .metric { padding: 20px 22px; border-right: 1px solid var(--border); }
+  .metric:last-child { border-right: none; }
+  .metric-num {
+    font-family: var(--font-display); font-size: 30px; font-weight: 600;
+    line-height: 1.1; letter-spacing: -0.01em;
+  }
+  .metric-sub { font-size: 18px; color: var(--text-faint); }
+  .metric-label { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint); margin-top: 6px; letter-spacing: 0.03em; }
+
+  /* ---------- Section shell ---------- */
+  section { padding: 64px 0; border-top: 1px solid var(--border); }
+  .section-label {
+    font-family: var(--font-mono); font-size: 13px; color: var(--accent-rust);
+    margin: 0 0 10px;
+  }
+  h2.section-title {
+    font-family: var(--font-display); font-size: clamp(26px, 3.4vw, 34px);
+    font-weight: 600; margin: 0 0 22px; letter-spacing: -0.01em;
+  }
+  .about-body p { color: var(--text-muted); font-size: 17px; }
+  .about-body strong { color: var(--text); font-weight: 600; }
+
+  /* ---------- Discipline groups ---------- */
+  .group { margin-top: 56px; }
+  .group:first-of-type { margin-top: 36px; }
+  .group-head {
+    display: flex; align-items: baseline; gap: 14px;
+    padding-bottom: 12px; margin-bottom: 6px;
+    border-bottom: 2px solid var(--accent-rust);
+  }
+  .group-num { font-family: var(--font-mono); font-size: 12.5px; color: var(--accent-rust); }
+  h3.group-title { font-family: var(--font-display); font-size: 21px; font-weight: 600; margin: 0; }
+  .group-note { color: var(--text-faint); font-size: 14px; margin: 10px 0 0; max-width: 660px; }
+
+  /* ---------- Work list ---------- */
+  .work-intro { color: var(--text-muted); max-width: 660px; margin-bottom: 10px; }
+  .project { padding: 34px 0; border-top: 1px solid var(--border); }
+  .group .project:first-of-type { border-top: none; }
+  .project-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px 20px; margin-bottom: 6px;
+  }
+  h4.project-title { font-family: var(--font-display); font-size: 23px; font-weight: 600; margin: 0; }
+  .project-meta {
+    font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint);
+    margin: 0 0 14px;
+  }
+  .tags { display: flex; gap: 7px; flex-wrap: wrap; }
+  .tag {
+    font-family: var(--font-mono); font-size: 11.5px; padding: 4px 10px;
+    border-radius: 20px; white-space: nowrap;
+  }
+  .tag-game { color: var(--accent-rust); background: var(--accent-rust-soft); }
+  .tag-web { color: var(--accent-steel); background: var(--accent-steel-soft); }
+  .tag-ui { color: var(--accent-steel); background: var(--accent-steel-soft); }
+  .tag-time { color: var(--accent-moss); background: var(--accent-moss-soft); }
+  .tag-space { color: var(--accent-moss); background: var(--accent-moss-soft); }
+  .project-copy { color: var(--text-muted); max-width: 660px; }
+  .project-copy p { margin: 0 0 14px; }
+  .project-copy em { color: var(--text); font-style: italic; }
+  .project-copy strong { color: var(--text); font-weight: 600; }
+
+  /* ---------- Fill-in marker ---------- */
+  .todo {
+    border-left: 3px solid var(--accent-rust);
+    background: var(--accent-rust-soft);
+    padding: 12px 16px; border-radius: 0 5px 5px 0;
+    margin: 0 0 16px; max-width: 700px;
+    font-size: 15px; color: var(--text-muted);
+  }
+  .todo-tag {
+    display: block; font-family: var(--font-mono); font-size: 11px;
+    color: var(--accent-rust); letter-spacing: 0.06em; margin-bottom: 5px;
+  }
+  .todo em { color: var(--text); }
+
+  /* ---------- Callout ---------- */
+  .callout {
+    border: 1px solid var(--border); border-radius: 8px;
+    background: var(--bg-panel); padding: 22px 26px;
+    margin: 26px 0 0; max-width: 740px;
+  }
+  .callout-head {
+    font-family: var(--font-mono); font-size: 12px; color: var(--accent-steel);
+    letter-spacing: 0.04em; margin-bottom: 10px;
+  }
+  .callout p { color: var(--text-muted); margin: 0 0 12px; font-size: 16px; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* ---------- placeholder gallery ---------- */
+  .gallery { display: grid; gap: 14px; margin-top: 22px; }
+  .gallery.g2 { grid-template-columns: repeat(2, 1fr); }
+  .gallery.g3 { grid-template-columns: repeat(3, 1fr); }
+  .gallery.g4 { grid-template-columns: repeat(4, 1fr); }
+  .gallery.g6 { grid-template-columns: repeat(3, 1fr); }
+  .shot {
+    aspect-ratio: 16/10;
+    border: 1.5px dashed var(--border);
+    border-radius: 8px;
+    background: var(--bg-panel);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; padding: 14px; text-align: center;
+  }
+  .shot svg { width: 22px; height: 22px; opacity: 0.5; }
+  .shot-label { font-size: 12.5px; color: var(--text-faint); line-height: 1.4; }
+  .shot.wide { aspect-ratio: 16/6; }
+  .shot.tall { aspect-ratio: 3/4; }
+
+  .tile-name {
+    font-family: var(--font-mono); font-size: 11.5px;
+    color: var(--accent-steel); letter-spacing: 0.03em;
+  }
+
+  /* ---------- Real figures ---------- */
+  figure.fig { margin: 0; display: flex; flex-direction: column; gap: 9px; }
+  figure.fig img {
+    display: block; width: 100%; height: auto;
+    border: 1px solid var(--border); border-radius: 8px;
+    background: var(--bg-panel);
+    cursor: zoom-in;
+    transition: border-color .15s;
+  }
+  figure.fig img:hover { border-color: var(--accent-rust); }
+  figure.fig figcaption {
+    font-size: 13.5px; color: var(--text-faint); line-height: 1.45;
+  }
+  figure.fig figcaption b {
+    display: block; color: var(--text-muted); font-weight: 500;
+    font-family: var(--font-mono); font-size: 11.5px;
+    letter-spacing: 0.03em; margin-bottom: 3px;
+  }
+  .figs { display: grid; gap: 22px; margin-top: 24px; }
+  .figs.f1 { grid-template-columns: 1fr; }
+  .figs.f2 { grid-template-columns: repeat(2, 1fr); }
+  .figs.f3 { grid-template-columns: repeat(3, 1fr); }
+
+  /* ---------- Video embed ---------- */
+  .video-embed {
+    position: relative; width: 100%; aspect-ratio: 16/9;
+    margin-top: 24px; border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; background: #000;
+  }
+  .video-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .yt-facade {
+    position: absolute; inset: 0; display: block;
+    text-decoration: none; overflow: hidden; background: #000;
+  }
+  .yt-facade img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    opacity: 0.82; transition: opacity .18s, transform .35s;
+  }
+  .yt-facade:hover img, .yt-facade:focus-visible img { opacity: 1; transform: scale(1.02); }
+  .yt-play {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 66px; height: 46px; border-radius: 10px;
+    background: rgba(23,20,15,0.72); border: 1px solid rgba(237,230,216,0.35);
+    transition: background .18s, border-color .18s;
+  }
+  .yt-play::after {
+    content: ""; position: absolute; top: 50%; left: 52%;
+    transform: translate(-50%, -50%);
+    border-style: solid; border-width: 9px 0 9px 15px;
+    border-color: transparent transparent transparent var(--text);
+  }
+  .yt-facade:hover .yt-play, .yt-facade:focus-visible .yt-play {
+    background: var(--accent-rust); border-color: var(--accent-rust);
+  }
+  .yt-facade:hover .yt-play::after, .yt-facade:focus-visible .yt-play::after {
+    border-left-color: #17140F;
+  }
+  .yt-hint {
+    position: absolute; left: 12px; bottom: 11px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em;
+    color: var(--text-muted); background: rgba(23,20,15,0.72);
+    padding: 3px 9px; border-radius: 4px;
+  }
+  .video-caption {
+    font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint);
+    margin-top: 9px;
+  }
+  .videos { display: grid; gap: 22px; margin-top: 24px; }
+  .videos.v2 { grid-template-columns: repeat(2, 1fr); }
+  .videos figure { margin: 0; display: flex; flex-direction: column; gap: 9px; }
+  .videos .video-embed { margin-top: 0; }
+  .videos figcaption { font-size: 13.5px; color: var(--text-faint); line-height: 1.45; }
+  .videos figcaption b {
+    display: block; color: var(--text-muted); font-weight: 500;
+    font-family: var(--font-mono); font-size: 11.5px;
+    letter-spacing: 0.03em; margin-bottom: 3px;
+  }
+  .vlink {
+    display: block; margin-top: 5px;
+    font-family: var(--font-mono); font-size: 11px; color: var(--text-faint);
+    text-decoration: none;
+  }
+  .vlink:hover { color: var(--accent-rust); }
+  .sitelinks { display: flex; gap: 9px; flex-wrap: wrap; margin: 16px 0 0; }
+  .sitelink {
+    font-family: var(--font-mono); font-size: 11.5px;
+    padding: 5px 12px; border: 1px solid var(--border); border-radius: 20px;
+    color: var(--text-muted); text-decoration: none; transition: border-color .15s, color .15s;
+  }
+  .sitelink:hover { border-color: var(--accent-rust); color: var(--accent-rust); }
+  .sitelink span { color: var(--text-faint); }
+
+  /* ---------- Client evidence ---------- */
+  .ratings {
+    display: grid; grid-template-columns: 210px 1fr; gap: 28px;
+    border: 1px solid var(--border); border-radius: 8px;
+    background: var(--bg-panel); padding: 22px 26px; margin-top: 26px;
+    align-items: center;
+  }
+  .ratings-score { text-align: center; }
+  .ratings-num {
+    font-family: var(--font-display); font-size: 46px; font-weight: 600;
+    line-height: 1; letter-spacing: -0.01em;
+  }
+  .ratings-num span { font-size: 20px; color: var(--text-faint); }
+  .ratings-meta {
+    font-family: var(--font-mono); font-size: 11px; color: var(--text-faint);
+    margin-top: 8px; line-height: 1.6;
+  }
+  .bar-row {
+    display: grid; grid-template-columns: 34px 1fr 42px;
+    gap: 12px; align-items: center;
+    font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint);
+    padding: 3px 0;
+  }
+  .bar { height: 7px; border-radius: 4px; background: var(--bg-elevated); overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--accent-moss); }
+  .bar-row.low i { background: var(--accent-rust); }
+  .bar-row b { color: var(--text-muted); font-weight: 400; text-align: right; }
+
+  .reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+  .review {
+    border: 1px solid var(--border); border-radius: 8px;
+    background: var(--bg-panel); padding: 18px 20px;
+    display: flex; flex-direction: column; justify-content: space-between; gap: 14px;
+  }
+  .review p { margin: 0; color: var(--text-muted); font-size: 15px; line-height: 1.5; }
+  .review cite {
+    font-style: normal; font-family: var(--font-mono);
+    font-size: 11px; color: var(--text-faint);
+  }
+  .review-why {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--accent-steel); letter-spacing: 0.04em; margin-bottom: 10px;
+  }
+  .review.critical { border-color: var(--accent-rust); grid-column: 1 / -1; }
+  .review.critical .review-why { color: var(--accent-rust); }
+  @media (max-width: 860px) {
+    .reviews { grid-template-columns: 1fr; }
+    .ratings { grid-template-columns: 1fr; gap: 18px; }
+  }
+
+  /* ---------- Lightbox ---------- */
+  #lightbox {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(12,10,7,0.95);
+    display: none; align-items: center; justify-content: center;
+    padding: 34px; cursor: zoom-out;
+  }
+  #lightbox.open { display: flex; }
+  #lightbox img { max-width: 100%; max-height: 100%; border-radius: 6px; }
+  #lightbox .lb-close {
+    position: absolute; top: 18px; right: 24px;
+    font-family: var(--font-mono); font-size: 13px; color: var(--text-muted);
+  }
+
+  /* figures dropped into the placeholder grids */
+  .gallery, .compare { align-items: start; }
+  .gallery figure.fig, .compare figure.fig { margin: 0; }
+  .filmstrip figure.fig { flex: 0 0 240px; }
+
+  /* ---------- Studio mode (localhost only) ---------- */
+  body.studio .shot[data-slot] { cursor: copy; transition: border-color .15s, background .15s; }
+  body.studio .shot[data-slot]:hover { border-color: var(--accent-rust); background: var(--accent-rust-soft); }
+  body.studio .shot.drop-hot,
+  body.studio figure.fig.drop-hot img {
+    border-color: var(--accent-rust) !important;
+    background: var(--accent-rust-soft);
+  }
+  body.studio figure.fig[data-slot] img { cursor: copy; }
+  body.studio .shot[data-slot]::after {
+    content: "click or drop";
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--accent-rust); letter-spacing: 0.05em;
+  }
+  #studio-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
+    background: var(--bg-elevated); border-top: 1px solid var(--accent-rust);
+    padding: 10px 20px; display: none;
+    font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);
+    justify-content: space-between; align-items: center; gap: 16px;
+  }
+  body.studio #studio-bar { display: flex; }
+  #studio-bar b { color: var(--accent-rust); font-weight: 500; }
+  #studio-msg { color: var(--text); }
+  #studio-bar .hint { color: var(--text-faint); }
+  @media print { #studio-bar { display: none !important; } }
+
+  /* filmstrip variant */
+  .filmstrip { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; margin-top: 22px; }
+  .filmstrip .shot { flex: 0 0 190px; aspect-ratio: 16/10; }
+
+  /* compare pairs */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+  .compare-col { display: flex; flex-direction: column; gap: 8px; }
+  .compare-caption { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint); text-align: center; }
+
+  /* video slot */
+  .video-slot {
+    aspect-ratio: 16/9; border: 1.5px dashed var(--accent-rust);
+    border-radius: 8px; background: var(--accent-rust-soft);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; padding: 20px; text-align: center; margin-top: 22px;
+  }
+  .video-slot svg { width: 30px; height: 30px; color: var(--accent-rust); opacity: 0.8; }
+  .video-slot .shot-label { color: var(--accent-rust); font-size: 13px; max-width: 52ch; }
+
+  /* ---------- Process steps ---------- */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 26px; }
+  .step {
+    border: 1px solid var(--border); border-radius: 8px;
+    background: var(--bg-panel); padding: 18px 20px;
+  }
+  .step-num { font-family: var(--font-mono); font-size: 11.5px; color: var(--accent-rust); margin-bottom: 8px; }
+  .step-title { font-family: var(--font-display); font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .step-body { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+
+  blockquote.brief {
+    margin: 26px 0 0; padding: 18px 22px;
+    border-left: 3px solid var(--accent-steel);
+    background: var(--bg-panel); border-radius: 0 6px 6px 0;
+    color: var(--text-muted); font-size: 15.5px; max-width: 740px;
+  }
+  blockquote.brief cite {
+    display: block; margin-top: 10px; font-style: normal;
+    font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint);
+  }
+
+  /* ---------- Coverage table ---------- */
+  .coverage { width: 100%; border-collapse: collapse; margin-top: 24px; font-size: 15px; }
+  .coverage th {
+    text-align: left; font-family: var(--font-mono); font-size: 11.5px;
+    color: var(--text-faint); font-weight: 400; letter-spacing: 0.04em;
+    padding: 0 0 10px; border-bottom: 1px solid var(--border);
+  }
+  .coverage td { padding: 12px 14px 12px 0; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-muted); }
+  .coverage td:first-child { color: var(--text); font-weight: 500; width: 30%; }
+  .coverage td:last-child { padding-right: 0; }
+  .coverage em.gap { color: var(--accent-rust); font-style: italic; }
+
+  /* ---------- Contact ---------- */
+  .contact-links { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 26px; }
+  footer { padding: 40px 0 calc(40px + env(safe-area-inset-bottom, 0px)); color: var(--text-faint); font-size: 13.5px; border-top: 1px solid var(--border); }
+
+  @media (max-width: 860px) {
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .metric:nth-child(2) { border-right: none; }
+    .metric:nth-child(1), .metric:nth-child(2) { border-bottom: 1px solid var(--border); }
+    .steps { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .gallery.g2, .gallery.g3, .gallery.g4, .gallery.g6 { grid-template-columns: repeat(2, 1fr); }
+    .figs.f2, .figs.f3 { grid-template-columns: 1fr; }
+    .compare { grid-template-columns: 1fr; }
+    .nav-links { gap: 14px; }
+    .nav-links a { font-size: 13px; }
+    .nav-name { font-size: 14px; }
+    .coverage td:first-child { width: 40%; }
+  }
+
+  /* ---------- Print (for PDF submission) ---------- */
+  @media print {
+    :root { --bg: #fff; --bg-panel: #f6f4f0; --border: #d8d2c6;
+            --text: #1a1a1a; --text-muted: #45403a; --text-faint: #7a7369; }
+    body { background: #fff; color: #1a1a1a; font-size: 11pt; }
+    nav { display: none; }
+    section { padding: 26px 0; }
+    .project, .group-head, .callout, .steps, figure.fig { page-break-inside: avoid; }
+    .video-slot { border: 1px solid #999; }
+    .video-embed { display: none; }
+    .videos.v2 { grid-template-columns: 1fr; }
+    figure.fig img { border: 1px solid #bbb; }
+    #lightbox { display: none !important; }
+    a { text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-name">Md Shahidul Islam Sabbir</div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#process">Process</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1 class="title">Interfaces, encounters and systems, designed inside a live multiplayer game.</h1>
+      <p class="hero-lede">I design and build the interfaces, progression systems, spatial encounters and websites that run inside Rust game servers. Thirty-six published products, sold commercially, running on live servers with real players.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#work">See the work</a>
+        <a class="btn btn-ghost" href="#process">How I work</a>
+      </div>
+    </div>
+    <div class="stat-panel">
+      <div class="stat-panel-head">profile</div>
+      <div class="stat-row"><div class="stat-key">practice</div><div class="stat-val">Interface, systems &amp; encounter design</div></div>
+      <div class="stat-row"><div class="stat-key">training</div><div class="stat-val">Self-taught, shipped live since 2022</div></div>
+      <div class="stat-row"><div class="stat-key">marketplace</div><div class="stat-val">Codefling — Creator Pro</div></div>
+      <div class="stat-row"><div class="stat-key">freelance</div><div class="stat-val">Fiverr — 4.9 / 5</div></div>
+      <div class="stat-row"><div class="stat-key">background</div><div class="stat-val">B.Comm, Management — Dhaka University</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="practice" style="border-top:none; padding-top:0;">
+  <div class="wrap">
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-num">36</div>
+        <div class="metric-label">published products</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num">279</div>
+        <div class="metric-label">client projects delivered</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num">4.9<span class="metric-sub">/5</span></div>
+        <div class="metric-label">average client rating</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num">4<span class="metric-sub">yrs</span></div>
+        <div class="metric-label">commercial practice</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-label">about</div>
+    <h2 class="section-title">How I got here</h2>
+    <div class="about-body prose">
+      <p>I hold a <strong>Bachelor's degree in Management</strong> from the University of Dhaka, but my design training has come from a different classroom entirely: building and running systems for a live multiplayer game. Since 2022 I've taught myself C#, worked inside the Oxide and Carbon plugin frameworks, and designed the interfaces, progression systems and spatial encounters that players use every day.</p>
+      <p>That work is sold commercially on the <strong>Codefling</strong> marketplace — thirty-six published products, priced from $5 to $40 — and built to brief for clients through <strong>Fiverr</strong>, where I've delivered 279 projects at an average rating of 4.9. Every design decision has had to hold up under real use, not just look right in a mockup.</p>
+      <p>This portfolio selects ten of those projects, grouped by the design discipline each one belongs to.</p>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="section-label">selected work</div>
+    <h2 class="section-title">Ten projects, four disciplines</h2>
+    <p class="work-intro">Interface and information design; encounter and time-based design; spatial design; and web design and development. Every project below is live and commercially available.</p>
+
+    <!-- ============ GROUP 1 ============ -->
+    <div class="group">
+      <div class="group-head">
+        <span class="group-num">01</span>
+        <h3 class="group-title">Interface &amp; information design</h3>
+      </div>
+      <p class="group-note">Rust's CUI has no layout engine and no real component model: elements are positioned by hand in normalised screen coordinates, and anything beyond a filled rectangle has to be assembled out of image parts. Every interface below is built under those terms.</p>
+
+      <!-- 1.1 XP Pro -->
+      <div class="project">
+        <div class="project-head">
+          <h4 class="project-title">XP&nbsp;Pro — progression &amp; interface design</h4>
+          <div class="tags"><span class="tag tag-ui">Interface</span><span class="tag tag-game">Game design</span></div>
+        </div>
+        <p class="project-meta">Codefling · $25.00 · live · 83 skills across 11 disciplines · 20 permanent bonuses</p>
+        <div class="project-copy">
+          <p>Rust servers reward grinding, but rarely make a player <em>feel</em> their progress. I designed a full progression system — XP, an 83-skill tree across eleven disciplines, permanent bonuses, prestige tiers and activated abilities — and the interface that makes all of it legible inside a UI system with no layout engine, where every panel is placed by hand.</p>
+          <p>The hard problem was density. A player at level 19 is holding six statistics, sixteen active bonuses, seven unspent skill points and a tree of eighty-three skills at four different lock states. The entire hierarchy is carried by type weight, a three-step colour code and the rhythm of the grid — there is no component library to fall back on and nothing is responsive, so every one of those alignments is a number I chose.</p>
+        </div>
+
+        <div class="video-embed">
+          <a class="yt-facade" data-yt="o3-xJx4nQVY" data-title="XP Pro — showcase" href="https://www.youtube.com/watch?v=o3-xJx4nQVY" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/o3-xJx4nQVY/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/o3-xJx4nQVY/hqdefault.jpg" alt="XP Pro — showcase &mdash; play video" loading="lazy"><span class="yt-play" aria-hidden="true"></span><span class="yt-hint">watch</span></a>
+        </div>
+        <p class="video-caption">full product showcase · 1080p
+          <a class="vlink" href="https://www.youtube.com/watch?v=o3-xJx4nQVY" target="_blank" rel="noopener">youtube.com/watch?v=o3-xJx4nQVY</a>
+        </p>
+
+        <div class="figs f2">
+          <figure class="fig">
+            <img src="images/xppro/profile.webp" alt="XP Pro profile screen showing level, statistics, active buffs and a grid of permanent bonuses" loading="lazy">
+            <figcaption><b>profile</b>Six statistics, then sixteen of twenty permanent bonuses in a two-column grid. Green reads as active, grey as locked — the same two states used everywhere in the plugin.</figcaption>
+          </figure>
+          <figure class="fig">
+            <img src="images/xppro/progression.jpg" alt="XP Pro progression screen showing a vertical timeline of levels with the buffs and rewards each one grants" loading="lazy">
+            <figcaption><b>progression</b>The same information turned on its side: a vertical timeline of every level, what each one unlocks, and where the player currently sits in it.</figcaption>
+          </figure>
+        </div>
+
+        <div class="figs f2">
+          <figure class="fig">
+            <img src="images/xppro/skills-lumberjack.jpg" alt="XP Pro skills screen showing the Lumberjack tree with a parent skill and five branching child skills" loading="lazy">
+            <figcaption><b>skill tree — unlocked branch</b>A parent skill with five children, connected by drawn rules. Each row carries its own current value, next value, level requirement, cost and upgrade state without a single one of them being mistaken for another.</figcaption>
+          </figure>
+          <figure class="fig">
+            <img src="images/xppro/skills-gathering-prestige.jpg" alt="XP Pro skills screen showing the Gathering tree entirely locked behind Prestige 1" loading="lazy">
+            <figcaption><b>skill tree — locked branch</b>The same layout with every row gated behind Prestige&nbsp;1. Locked content stays fully readable rather than hidden, so the player can see what they're working toward.</figcaption>
+          </figure>
+        </div>
+
+        <div class="callout">
+          <div class="callout-head">a radial menu in a rectangle-only system</div>
+          <p>Abilities are bound to a key and opened as a radial wheel — two levels deep, category first, then the individual ability, with the description resolving in the centre as the selection changes. It's the one place in the plugin that escapes the grid entirely, and it's drawn in a system whose native primitive is a box.</p>
+        </div>
+        <div class="figs f2">
+          <figure class="fig">
+            <img src="images/xppro/wheel-category.jpg" alt="In-game radial wheel showing skill categories, with Gathering selected and 4 of 4 unlocked" loading="lazy">
+            <figcaption><b>ability wheel — level 1</b>Category selection. The highlighted segment and the centre label update together, so the player never has to look in two places.</figcaption>
+          </figure>
+          <figure class="fig">
+            <img src="images/xppro/wheel-ability.jpg" alt="In-game radial wheel showing individual abilities within a category, with Ore Finder Instinct selected" loading="lazy">
+            <figcaption><b>ability wheel — level 2</b>Individual abilities within the chosen category. Same geometry, same centre-resolve, one level further in.</figcaption>
+          </figure>
+        </div>
+
+        <div class="figs f1">
+          <figure class="fig">
+            <img src="images/xppro/how-to-get-xp.webp" alt="XP Pro in-plugin documentation screen explaining what XP is, how to earn it, how to spend skill points and how to bind the ability wheel" loading="lazy">
+            <figcaption><b>onboarding, written into the interface</b>Rather than shipping documentation a player would never read, the explanation lives inside the menu: what XP is, how it's earned, how to spend it, the exact console commands to bind the ability wheel, and a live table of every XP source with its value. Server owners can point the store panel at their own URL.</figcaption>
+          </figure>
+        </div>
+
+      </div>
+
+      <!-- 1.2 HUD collection -->
+      <div class="project">
+        <div class="project-head">
+          <h4 class="project-title">A HUD language for Rust — six shipped interfaces</h4>
+          <div class="tags"><span class="tag tag-ui">Interface</span><span class="tag tag-ui">Design system</span></div>
+        </div>
+        <p class="project-meta">Players UI · Minimalist Hud · Vehicle Hud · SimpleStatsUI · Custom Vitals Manager · Toastify — Codefling · free to $15.00</p>
+        <div class="project-copy">
+          <p>Across six separate products I designed heads-up displays for the same game at six different information densities — from a minimal always-on bar, to a full player panel, to a vehicle-specific readout. Taken together they are one continuous investigation: how much state can sit permanently on screen before it stops being read.</p>
+          <p><strong>Toastify</strong> is the outlier, and the piece I am proudest of. It has no screen of its own — it's a notification primitive that <em>other developers</em> build their own interfaces on top of. Designing a component for people whose use of it you'll never see is a different problem to designing a screen, and it's the closest thing in my practice to design-systems work.</p>
+        </div>
+        <div class="gallery g6">
+          <!--slot:hud-players-ui--><figure class="fig" data-slot="hud-players-ui" data-caption="Players UI"><img src="images/hud-players-ui.png" alt="Players UI" loading="lazy"><figcaption>Players UI</figcaption></figure><!--/slot:hud-players-ui-->
+          <!--slot:hud-minimalist--><figure class="fig" data-slot="hud-minimalist" data-caption="Minimalist Hud"><img src="images/hud-minimalist.png" alt="Minimalist Hud" loading="lazy"><figcaption>Minimalist Hud</figcaption></figure><!--/slot:hud-minimalist-->
+          <!--slot:hud-vehicle--><figure class="fig" data-slot="hud-vehicle" data-caption="Vehicle Hud"><img src="images/hud-vehicle.png" alt="Vehicle Hud" loading="lazy"><figcaption>Vehicle Hud</figcaption></figure><!--/slot:hud-vehicle-->
+          <!--slot:hud-simplestats--><figure class="fig" data-slot="hud-simplestats" data-caption="SimpleStatsUI"><img src="images/hud-simplestats.png" alt="SimpleStatsUI" loading="lazy"><figcaption>SimpleStatsUI</figcaption></figure><!--/slot:hud-simplestats-->
+          <!--slot:hud-custom-vitals--><figure class="fig" data-slot="hud-custom-vitals" data-caption="Custom Vitals Manager"><img src="images/hud-custom-vitals.png" alt="Custom Vitals Manager" loading="lazy"><figcaption>Custom Vitals Manager</figcaption></figure><!--/slot:hud-custom-vitals-->
+          <!--slot:hud-toastify--><figure class="fig" data-slot="hud-toastify" data-caption="Toastify"><img src="images/hud-toastify.png" alt="Toastify" loading="lazy"><figcaption>Toastify</figcaption></figure><!--/slot:hud-toastify-->
+        </div>
+      </div>
+
+      <!-- 1.3 Social Media Rust -->
+      <div class="project">
+        <div class="project-head">
+          <h4 class="project-title">Social Media Rust — an interface moved across media</h4>
+          <div class="tags"><span class="tag tag-ui">Interface</span><span class="tag tag-game">Interactive media</span></div>
+        </div>
+        <p class="project-meta">Codefling · $25.00 · live</p>
+        <div class="project-copy">
+          <p>A working social platform — feed, profiles, posts, comments, bookmarks, trending tags — built to run inside a survival game, on a UI system with no layout engine and no scroll container you get for free. Every convention the form depends on had to be rebuilt by hand out of primitives the game never intended for it.</p>
+        </div>
+        <div class="project-copy" style="margin-top:14px;">
+          <p>What shipped keeps most of the form intact: an authored feed, profiles with a banner, an avatar and follower, like and post counts, an About Me, image posts, likes, bookmarks and threaded comments, plus a search field, a trending-hashtag board and a most-liked-users ranking down the right-hand side. Chat, notifications and a follow list sit in a persistent left rail.</p>
+          <p>What had to change are the parts that depend on scale. Trending hashtags on a server of a hundred players surface at one post each, and a most-liked table ranks a handful of names rather than millions, so the whole thing reads as a small town rather than a network. The content is the game itself &mdash; the screenshots are raids, the captions are threats &mdash; which turns a format built for broadcasting into one for taunting people you will meet again within the hour.</p>
+        </div>
+        <div class="gallery g3">
+          <!--slot:social-media-rust-an-interfa-the-feed--><figure class="fig" data-slot="social-media-rust-an-interfa-the-feed" data-caption="The feed"><img src="images/social-media-rust-an-interfa-the-feed.jpg" alt="The feed" loading="lazy"><figcaption>The feed</figcaption></figure><!--/slot:social-media-rust-an-interfa-the-feed-->
+          <!--slot:social-media-rust-an-interfa-a-player-profile--><figure class="fig" data-slot="social-media-rust-an-interfa-a-player-profile" data-caption="A player profile"><img src="images/social-media-rust-an-interfa-a-player-profile.jpg" alt="A player profile" loading="lazy"><figcaption>A player profile</figcaption></figure><!--/slot:social-media-rust-an-interfa-a-player-profile-->
+          <!--slot:social-media-rust-an-interfa-composing-a-post--><figure class="fig" data-slot="social-media-rust-an-interfa-composing-a-post" data-caption="A post and its comment thread"><img src="images/social-media-rust-an-interfa-composing-a-post.jpg" alt="A post and its comment thread" loading="lazy"><figcaption>A post and its comment thread</figcaption></figure><!--/slot:social-media-rust-an-interfa-composing-a-post-->
+        </div>
+      </div>
+
+      <!-- 1.4 SimplePVE -->
+      <div class="project">
+        <div class="project-head">
+          <h4 class="project-title">SimplePVE — an authoring tool for 55 rules</h4>
+          <div class="tags"><span class="tag tag-ui">Interface</span><span class="tag tag-game">Systems</span></div>
+        </div>
+        <p class="project-meta">Codefling · $19.99 · live · 55 rules · 7 categories · scheduled profiles</p>
+        <div class="project-copy">
+          <p>A server's combat rules are 55 separate switches. Left as a config file they're unreadable and nobody touches them; the design problem is turning that many booleans into something an owner can actually hold in their head and change with confidence while players are online.</p>
+          <p>My answer was to stop treating them as a list. Rules are grouped into seven categories and edited one category at a time; complete sets are saved as <em>named profiles</em> — a Full PVE weekday rule set, a Weekend Raid one — which can be duplicated, previewed, scheduled and set live as a unit. The owner reasons about two named states, not fifty-five switches.</p>
+          <p>Every destructive control is colour-coded and separated from the safe ones, because the whole panel edits a live server. Benchmarked for performance and patched for compatibility with other plugins that change the same state underneath it.</p>
+        </div>
+        <div class="gallery g3">
+          <!--slot:simplepve-state-feedback-rul-tabbed-panel-raid-rules-tab-op--><figure class="fig" data-slot="simplepve-state-feedback-rul-tabbed-panel-raid-rules-tab-op" data-caption="Rule profiles — two named rule sets, one live"><img src="images/simplepve-state-feedback-rul-tabbed-panel-raid-rules-tab-op.png" alt="Rule profiles — two named rule sets, one live" loading="lazy"><figcaption>Rule profiles — two named rule sets, one live</figcaption></figure><!--/slot:simplepve-state-feedback-rul-tabbed-panel-raid-rules-tab-op-->
+          <!--slot:simplepve-state-feedback-rul-zone-indicator-pve-state--><figure class="fig" data-slot="simplepve-state-feedback-rul-zone-indicator-pve-state" data-caption="The rule editor — seven categories, 55 switches"><img src="images/simplepve-state-feedback-rul-zone-indicator-pve-state.png" alt="The rule editor — seven categories, 55 switches" loading="lazy"><figcaption>The rule editor — seven categories, 55 switches</figcaption></figure><!--/slot:simplepve-state-feedback-rul-zone-indicator-pve-state-->
+          <!--slot:simplepve-state-feedback-rul-zone-indicator-pvp-state--><figure class="fig" data-slot="simplepve-state-feedback-rul-zone-indicator-pvp-state" data-caption="Scheduling — a date picker built inside the game UI"><img src="images/simplepve-state-feedback-rul-zone-indicator-pvp-state.png" alt="Scheduling — a date picker built inside the game UI" loading="lazy"><figcaption>Scheduling — a date picker built inside the game UI</figcaption></figure><!--/slot:simplepve-state-feedback-rul-zone-indicator-pvp-state-->
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ GROUP 2 ============ -->
+    <div class="group">
+      <div class="group-head">
+        <span class="group-num">02</span>
+        <h3 class="group-title">Encounter &amp; time-based design</h3>
+      </div>
+      <p class="group-note">Events that unfold over time on a live server: paced sequences, adapted formats, and systems that hand authorship back to players.</p>
+
+      <!-- 2.1 Launch site + monuments -->
+      <div class="project">
+        <div class="project-head">
+          <h4 class="project-title">Arc Launch Site &amp; Monument Events — paced encounters</h4>
+          <div class="tags"><span class="tag tag-time">Time-based</span><span class="tag tag-game">Game design</span></div>
+        </div>
+        <p class="project-meta">Codefling · $25.00 and $19.99 · live · related: Military Airfield Event $14.99</p>
+        <div class="project-copy">
+          <p>Static loot events don't hold attention. I designed a drone-piloted launch-site sequence — writing a custom flight controller so the drone reads as autonomous rather than scripted — and NPC-populated monument encounters with spawn and navigation logic written from the ground up. Both run as recurring live events.</p>
+          <p>The design work here is pacing, not content: how long the approach takes, how much warning players get, and how wide the window is between arrival and resolution.</p>
+        </div>
+        <div class="videos v2">
+          <figure>
+            <div class="video-embed">
+              <a class="yt-facade" data-yt="RuX9LbwshIY" data-title="Arc Launch Site Event" href="https://www.youtube.com/watch?v=RuX9LbwshIY" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/RuX9LbwshIY/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/RuX9LbwshIY/hqdefault.jpg" alt="Arc Launch Site Event &mdash; play video" loading="lazy"><span class="yt-play" aria-hidden="true"></span><span class="yt-hint">watch</span></a>
+            </div>
+            <figcaption><b>arc launch site</b>The full sequence: the drone's approach, its arrival, and the contested window it opens. Pacing is the design here, and only the running footage shows it.
+              <a class="vlink" href="https://www.youtube.com/watch?v=RuX9LbwshIY" target="_blank" rel="noopener">youtube.com/watch?v=RuX9LbwshIY</a>
+            </figcaption>
+          </figure>
+          <figure>
+            <div class="video-embed">
+              <a class="yt-facade" data-yt="-cpZVcIN37s" data-title="Monument Events" href="https://www.youtube.com/watch?v=-cpZVcIN37s" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/-cpZVcIN37s/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/-cpZVcIN37s/hqdefault.jpg" alt="Monument Events &mdash; play video" loading="lazy"><span class="yt-play" aria-hidden="true"></span><span class="yt-hint">watch</span></a>
+            </div>
+            <figcaption><b>monument events</b>NPC-populated encounters across the map's existing monuments, with spawn and navigation logic written from scratch.
+              <a class="vlink" href="https://www.youtube.com/watch?v=-cpZVcIN37s" target="_blank" rel="noopener">youtube.com/watch?v=-cpZVcIN37s</a>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- 2.2 Glass Bridge / Floor Drops -->
+      <div class="project">
+        <div class="project-head">
+          <h4 class="project-title">Glass Bridge &amp; Floor Drops — adapting a format</h4>
+          <div class="tags"><span class="tag tag-time">Time-based</span><span class="tag tag-game">Game design</span></div>
+        </div>
+        <p class="project-meta">Codefling · $14.99 each · live</p>
+        <div class="project-copy">
+          <p>Two events that take a structure from outside games — an elimination format built on forced choice under time pressure — and rebuild it as playable rules inside a survival server.</p>
+          <p>They answer it two different ways. Glass Bridge makes every step a forced choice with nothing behind it to reason from, so the pressure is a decision. Floor Drops takes the ground away round by round, so the pressure is the space. One eliminates by guess, the other by geometry &mdash; and both have to hold up in front of an audience who can shoot back, which is the part no televised version ever has to solve.</p>
+        </div>
+        <div class="videos v2">
+          <figure>
+            <div class="video-embed">
+              <a class="yt-facade" data-yt="JIvNEIdLB7o" data-title="Glass Bridge" href="https://www.youtube.com/watch?v=JIvNEIdLB7o" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/JIvNEIdLB7o/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/JIvNEIdLB7o/hqdefault.jpg" alt="Glass Bridge &mdash; play video" loading="lazy"><span class="yt-play" aria-hidden="true"></span><span class="yt-hint">watch</span></a>
+            </div>
+            <figcaption><b>glass bridge</b>A crossing where every step is a forced choice with no information behind it, run against a clock in front of an audience who can also shoot.
+              <a class="vlink" href="https://www.youtube.com/watch?v=JIvNEIdLB7o" target="_blank" rel="noopener">youtube.com/watch?v=JIvNEIdLB7o</a>
+            </figcaption>
+          </figure>
+          <figure>
+            <div class="video-embed">
+              <a class="yt-facade" data-yt="GybuQj1-ZgU" data-title="Floor Drops 2.0" href="https://www.youtube.com/watch?v=GybuQj1-ZgU" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/GybuQj1-ZgU/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/GybuQj1-ZgU/hqdefault.jpg" alt="Floor Drops 2.0 &mdash; play video" loading="lazy"><span class="yt-play" aria-hidden="true"></span><span class="yt-hint">watch</span></a>
+            </div>
+            <figcaption><b>floor drops 2.0</b>Elimination by shrinking ground: the floor itself removes players round by round, so the pressure comes from the space rather than from an opponent.
+              <a class="vlink" href="https://www.youtube.com/watch?v=GybuQj1-ZgU" target="_blank" rel="noopener">youtube.com/watch?v=GybuQj1-ZgU</a>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+      </div>
+
+    <!-- ============ GROUP 3 ============ -->
+    <div class="group">
+      <div class="group-head">
+        <span class="group-num">03</span>
+        <h3 class="group-title">Spatial design</h3>
+      </div>
+      <p class="group-note">Designing navigable space — and drawing it.</p>
+
+      <div class="project">
+        <div class="project-head">
+          <h4 class="project-title">Maze — designed space</h4>
+          <div class="tags"><span class="tag tag-space">Spatial</span><span class="tag tag-game">Game design</span></div>
+        </div>
+        <p class="project-meta">Codefling · $40.00 · my highest-priced product · alongside: Maze Spawnable $25.00</p>
+        <div class="project-copy">
+          <p>A navigable maze that drops into a live server world and runs as a timed elimination event. Unlike everything else in this portfolio the material here is space itself: sightlines, dead ends, the rate at which a player loses their bearings, and where they are allowed to recover them.</p>
+          <p>The event frames the space rather than the other way round. A countdown holds players outside a sealed entrance, the doors open, and a second clock starts closing them — so the maze has to be readable enough to enter under pressure and confusing enough to be worth entering at all. Wall tops are wired, which removes climbing as an answer and forces every route decision back down to the floor.</p>
+        </div>
+
+        <div class="video-embed">
+          <a class="yt-facade" data-yt="5KuvT9bQaVo" data-title="Maze — Rust plugin demonstration" href="https://www.youtube.com/watch?v=5KuvT9bQaVo" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/5KuvT9bQaVo/maxresdefault.jpg" data-fallback="https://i.ytimg.com/vi/5KuvT9bQaVo/hqdefault.jpg" alt="Maze — Rust plugin demonstration &mdash; play video" loading="lazy"><span class="yt-play" aria-hidden="true"></span><span class="yt-hint">watch</span></a>
+        </div>
+        <p class="video-caption">the maze as an event, start to finish
+          <a class="vlink" href="https://www.youtube.com/watch?v=5KuvT9bQaVo" target="_blank" rel="noopener">youtube.com/watch?v=5KuvT9bQaVo</a>
+        </p>
+
+        <div class="figs f2">
+          <figure class="fig">
+            <img src="images/maze-aerial.jpg" alt="Overhead view of the maze showing its full plan, with wired wall tops and the arena boundary" loading="lazy">
+            <figcaption><b>the plan, from above</b>The whole layout in one view: a dense irregular grid with no repeating motif to navigate by, bounded by a solid outer wall. Barbed wire along every wall top closes off the vertical shortcut.</figcaption>
+          </figure>
+          <figure class="fig">
+            <img src="images/maze-entrance.webp" alt="The sealed maze entrance with Restricted Area doors and an on-screen countdown before opening" loading="lazy">
+            <figcaption><b>the entrance, before it opens</b>Players are held outside in a safe zone while a countdown runs down in chat and on the HUD. The doors, the timer and the remaining-players count do the work of turning a structure into an event.</figcaption>
+          </figure>
+        </div>
+        <!--slot:maze-plan-drawing--><!--/slot:maze-plan-drawing-->
+      </div>
+    </div>
+
+    <!-- ============ GROUP 4 ============ -->
+    <div class="group">
+      <div class="group-head">
+        <span class="group-num">04</span>
+        <h3 class="group-title">Web design &amp; development</h3>
+      </div>
+      <p class="group-note">Design carried out of the game and onto the open web — one built to an existing specification, one authored end to end.</p>
+
+      
+
+      <div class="project">
+        <div class="project-head">
+          <h4 class="project-title">IRANRUST &mdash; designing in Persian, right to left</h4>
+          <div class="tags"><span class="tag tag-web">Web design</span><span class="tag tag-web">Development</span></div>
+        </div>
+        <p class="project-meta">ir-rust.ir &middot; live &middot; Persian (Farsi), fully right-to-left &middot; 3 servers, 2,656+ registered players</p>
+        <div class="project-copy">
+          <p>A full community platform for one of Iran's largest Rust communities, designed and built entirely in Persian and entirely right-to-left. Almost every layout assumption inverts: reading order, alignment, the side a label sits on, the direction a bar fills, where the most significant digit of a countdown belongs.</p>
+          <p>It also runs on a different calendar. Dates are Jalali rather than Gregorian, so the news feed and the wipe schedule had to be built around a system whose months are different lengths and whose current year is 1404.</p>
+          <p>Past the marketing pages it carries live status for three servers with capacity and time-to-wipe, a leaderboard across 29 statistical categories refreshing every five minutes, and a team-finding board where players post as looking-for-team or looking-for-players &mdash; with a chat that only opens once both sides have accepted.</p>
+        </div>
+        <div class="sitelinks">
+          <a class="sitelink" href="https://ir-rust.ir/" target="_blank" rel="noopener">ir-rust.ir <span>&#8599;</span></a>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h4 class="project-title">Two more server sites &mdash; rustova.net &amp; Sweden Rust</h4>
+          <div class="tags"><span class="tag tag-web">Web design</span><span class="tag tag-web">Development</span></div>
+        </div>
+        <p class="project-meta">rustova.net &mdash; PHP, built end to end, my own server &middot; swedenrust.com &mdash; Nordic community site</p>
+        <div class="project-copy">
+          <p><strong>rustova.net</strong> is my own server's site, built in PHP end to end: store, leaderboard, ban list, support and admin tools. Every layout, content and information-architecture decision on it is mine, with no client and no brief &mdash; the only project here where I was the audience as well as the designer.</p>
+          <p><strong>Sweden Rust</strong> is the same problem for someone else's community, answered differently. Its home page is built around time: a live player count, running countdowns to the helicopter, cargo ship, Bradley and deep-sea events, and a schedule of community events with their prizes. The page is worth reloading because the numbers move.</p>
+          <p>Three server sites for three audiences &mdash; my own, a Persian community, a Nordic one &mdash; make a useful comparison: the same underlying content reorganised three times around who is reading it.</p>
+        </div>
+        <div class="sitelinks">
+          <a class="sitelink" href="https://swedenrust.com/" target="_blank" rel="noopener">swedenrust.com <span>&#8599;</span></a>
+          <a class="sitelink" href="https://rustova.net/" target="_blank" rel="noopener">rustova.net <span>&#8599;</span></a>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h4 class="project-title">Browser tools for the people who run my plugins</h4>
+          <div class="tags"><span class="tag tag-web">Web design</span><span class="tag tag-ui">Tool design</span></div>
+        </div>
+        <p class="project-meta">xppro-editor.vercel.app &amp; npcbands.vercel.app &middot; live, free to use</p>
+        <div class="project-copy">
+          <p>Both of these exist because of a complaint. My plugins are configured by hand-editing JSON, and for anything the size of XP Pro that is genuinely miserable &mdash; one missing brace and a server owner has a broken server and no idea why.</p>
+          <p><strong>XPPro Editor</strong> takes the plugin's own data files &mdash; the progression ladder, the buffs, the 83 skills &mdash; and turns editing them into a visual task. You drag <code>LevelsData.json</code> onto the page, change what you need across three linked editors, and download a file that is valid by construction. Nothing is uploaded; it all runs in the browser.</p>
+          <p><strong>NPC Bands Track Generator</strong> is stranger, and I like it more. The plugin puts NPC musicians in the world; the generator takes a MIDI file, converts it into a track the in-game instruments can actually play, and hands it back. It turns &ldquo;write music for Rust&rdquo; into &ldquo;drop in a MIDI file&rdquo;.</p>
+          <p>These are the only things here designed for an audience that is neither a player nor a client, but someone trying to operate what I made. Different failure states, less tolerance for ambiguity, and no tutorial.</p>
+        </div>
+        <div class="sitelinks">
+          <a class="sitelink" href="https://xppro-editor.vercel.app/" target="_blank" rel="noopener">xppro-editor.vercel.app <span>&#8599;</span></a>
+          <a class="sitelink" href="https://npcbands.vercel.app/" target="_blank" rel="noopener">npcbands.vercel.app <span>&#8599;</span></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="process">
+  <div class="wrap">
+    <div class="section-label">process</div>
+    <h2 class="section-title">Designing to a brief, 279 times</h2>
+    <p class="work-intro">Alongside the products above, I've delivered 279 commissioned projects through Fiverr at an average rating of 4.9 — 189 of them on a single service. Clients arrive with a list, not a specification. Turning one into the other is the design work.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-title">Brief</div>
+        <div class="step-body">The client's own words — usually a feature list, often contradictory, rarely prioritised.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-title">Interpretation</div>
+        <div class="step-body">What they asked for versus what they want. Resolving conflicts, naming what's missing, proposing what they didn't know to ask for.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-title">Build</div>
+        <div class="step-body">Configuration, interface design and custom work against the agreed specification.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-title">Live</div>
+        <div class="step-body">Handover to a running server with real players, then iteration against what actually happens.</div>
+      </div>
+    </div>
+
+    <blockquote class="brief">
+      &ldquo;5x Gathers and Loots, Raid basses spawn on the map, A level system like chopping wood and much other activity, Loot tables to be accurate to 5x or a little higher, Custom component loot, Better Airdrops, Better Helicopters, Monuments to have better Loot, Stacks to be well made, Kits for players and Donated players, Shop setup in-game, Welcome panel setup with good design, Fast Crafting times, Make it so everyone has Tier 1 workbench fully learned, Smelting times to 5x speed, Clans setup, Custom chat tags for donors and Stuff members, And a Tebex website setup with automatic rank given to players upon purchases.&rdquo;
+      <cite>— client brief, Krom Romania EU 5x, quoted verbatim. Delivered in full.</cite>
+    </blockquote>
+
+    <div class="project-copy" style="margin-top:22px;">
+          <p>Twenty instructions, and exactly one of them is about design: <em>&ldquo;welcome panel setup with good design&rdquo;</em>. Everything else is a quantity, a rate or a switch &mdash; verifiable, and largely a configuration task. The one line carrying any judgement is also the only one with no way to check it, and it is the line the client will actually remember.</p>
+          <p>That asymmetry is the job. Most of a brief like this can be delivered exactly as written; the value sits in the single item that cannot be, and in noticing which item that is before starting.</p>
+        </div>
+
+    
+    <div class="ratings">
+      <div class="ratings-score">
+        <div class="ratings-num">4.9<span>/5</span></div>
+        <div class="ratings-meta">189 reviews on this one service<br>279 across all my work<br>communication 4.9 &middot; quality 4.9 &middot; value 4.9</div>
+      </div>
+      <div>
+        <div class="bar-row"><span>5&#9733;</span><div class="bar"><i style="width:93.7%"></i></div><b>177</b></div>
+        <div class="bar-row"><span>4&#9733;</span><div class="bar"><i style="width:2.1%"></i></div><b>4</b></div>
+        <div class="bar-row"><span>3&#9733;</span><div class="bar"><i style="width:2.1%"></i></div><b>4</b></div>
+        <div class="bar-row"><span>2&#9733;</span><div class="bar"><i style="width:0%"></i></div><b>0</b></div>
+        <div class="bar-row"><span>1&#9733;</span><div class="bar"><i style="width:2.1%"></i></div><b>4</b></div>
+      </div>
+    </div>
+
+    <div class="reviews">
+      <div class="review">
+        <div>
+          <div class="review-why">evidence: proposing past the brief</div>
+          <p>&ldquo;He understood the project very well, immediately contributed helpful ideas of his own&hellip;&rdquo;</p>
+        </div>
+        <cite>jigolo1101 &middot; Austria &middot; 5&#9733;</cite>
+      </div>
+      <div class="review">
+        <div>
+          <div class="review-why">evidence: advising a client who cannot specify</div>
+          <p>&ldquo;If you don't know what you need&hellip; he has great recommendations for plugins and ideas for perks.&rdquo;</p>
+        </div>
+        <cite>alexandriaisis &middot; 5&#9733;</cite>
+      </div>
+      <div class="review">
+        <div>
+          <div class="review-why">evidence: the usability gap</div>
+          <p>&ldquo;I did not know how to navigate through the options and settings, he kindly guided me through the setup.&rdquo;</p>
+        </div>
+        <cite>dc2fans2 &middot; 5&#9733;</cite>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-head">designing under a hard constraint</div>
+      <p>Rust's CUI gives you almost nothing: no layout engine, no flexbox or grid, no component model, no scroll container, no state. Elements are placed by hand in normalised screen coordinates and the whole interface is rebuilt and re-sent to each player every time anything changes. Type, colour, spacing and alignment carry the entire hierarchy of every interface in this portfolio.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="section-label">contact</div>
+    <h2 class="section-title">See the live work</h2>
+    <p class="prose" style="color:var(--text-muted)">Every project in this portfolio is commercially available and currently running. The profiles below show the full catalogue — thirty-six products and 279 delivered commissions — in context.</p>
+    <div class="contact-links">
+      <a class="btn btn-primary" href="https://codefling.com/iftebinjan" target="_blank" rel="noopener">Codefling — 36 products</a>
+      <a class="btn btn-ghost" href="https://www.fiverr.com/users/iftebinjan/portfolio" target="_blank" rel="noopener">Fiverr — 4.9 from 279 reviews</a>
+      <a class="btn btn-ghost" href="mailto:mdshahidul614929@gmail.com">Email</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Md Shahidul Islam Sabbir &middot; interface, systems &amp; encounter design &middot; <a href="https://codefling.com/iftebinjan" target="_blank" rel="noopener">Codefling</a> &middot; <a href="https://www.fiverr.com/users/iftebinjan/portfolio" target="_blank" rel="noopener">Fiverr</a></div>
+</footer>
+
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image">
+  <span class="lb-close">close &times;</span>
+  <img alt="">
+</div>
+
+<div id="studio-bar">
+  <span><b>studio mode</b> &nbsp;— click or drop an image on any dashed box. Files are copied into <code>images/</code> and saved into this page.</span>
+  <span id="studio-msg" class="hint">ready</span>
+</div>
+<input type="file" id="studio-picker" accept="image/png,image/jpeg,image/webp,image/gif,image/avif" hidden>
+
+<script>
+  (function () {
+    var box = document.getElementById('lightbox');
+    var boxImg = box.querySelector('img');
+
+    document.addEventListener('click', function (e) {
+      var img = e.target.closest('figure.fig img');
+      if (img) {
+        boxImg.src = img.currentSrc || img.src;
+        boxImg.alt = img.alt;
+        box.classList.add('open');
+        return;
+      }
+      if (box.classList.contains('open')) box.classList.remove('open');
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') box.classList.remove('open');
+    });
+  })();
+
+  /* ---- Click-to-play video ----
+     YouTube refuses to embed on a file:// page (error 153), so each video is a
+     poster by default. Over http(s) a click swaps in the real player; opened
+     straight off disk, the same click opens the video on YouTube instead. */
+  (function () {
+    var servable = location.protocol === 'http:' || location.protocol === 'https:';
+
+    document.querySelectorAll('.yt-facade img').forEach(function (img) {
+      img.addEventListener('error', function once() {
+        img.removeEventListener('error', once);
+        if (img.dataset.fallback) img.src = img.dataset.fallback;
+      });
+    });
+
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('.yt-facade');
+      if (!a || !servable) return;          // file:// -> let the link open YouTube
+      e.preventDefault();
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + a.dataset.yt +
+              '?autoplay=1&rel=0';
+      f.title = a.dataset.title || 'Video';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      f.allowFullscreen = true;
+      a.replaceWith(f);
+    });
+  })();
+
+  /* ---- Studio mode: only when served by studio.py on this machine ---- */
+  (function () {
+    var local = ['localhost', '127.0.0.1', '[::1]'].indexOf(location.hostname) !== -1;
+    if (!local || location.protocol === 'file:') return;
+
+    fetch('/api/ping')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { if (j && j.studio) start(); })
+      .catch(function () { /* plain static server — stay off */ });
+
+    function start() {
+      document.body.classList.add('studio');
+
+      var msg = document.getElementById('studio-msg');
+      var picker = document.getElementById('studio-picker');
+      var pending = null;
+
+      function say(text, tone) {
+        msg.textContent = text;
+        msg.className = tone === 'bad' ? '' : (tone === 'busy' ? 'hint' : '');
+        msg.style.color = tone === 'bad' ? '#e0703a' : '';
+      }
+
+      function targetOf(el) {
+        return el.closest('.shot[data-slot], figure.fig[data-slot]');
+      }
+
+      function upload(slot, file) {
+        if (!file) return;
+        say('uploading ' + file.name + '…', 'busy');
+        fetch('/api/upload?slot=' + encodeURIComponent(slot) +
+              '&name=' + encodeURIComponent(file.name), {
+          method: 'POST',
+          headers: { 'Content-Type': file.type || 'application/octet-stream' },
+          body: file
+        })
+        .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+        .then(function (res) {
+          if (!res.ok) { say(res.j.error || 'upload failed', 'bad'); return; }
+          say('saved → images/' + res.j.slot + ' · reloading');
+          sessionStorage.setItem('studioScroll', String(window.scrollY));
+          location.reload();
+        })
+        .catch(function (e) { say('upload failed: ' + e.message, 'bad'); });
+      }
+
+      /* click a placeholder (or a filled figure) to browse */
+      document.addEventListener('click', function (e) {
+        if (!document.body.classList.contains('studio')) return;
+        var t = targetOf(e.target);
+        if (!t) return;
+
+        if (e.shiftKey && t.tagName === 'FIGURE') {
+          e.preventDefault(); e.stopPropagation();
+          if (!confirm('Remove this image and restore the placeholder?')) return;
+          fetch('/api/revert?slot=' + encodeURIComponent(t.dataset.slot), { method: 'POST' })
+            .then(function () {
+              sessionStorage.setItem('studioScroll', String(window.scrollY));
+              location.reload();
+            });
+          return;
+        }
+
+        if (t.tagName === 'FIGURE') return;   /* plain click on a figure = lightbox */
+        e.preventDefault();
+        pending = t.dataset.slot;
+        picker.value = '';
+        picker.click();
+      }, true);
+
+      picker.addEventListener('change', function () {
+        if (pending && picker.files[0]) upload(pending, picker.files[0]);
+        pending = null;
+      });
+
+      /* drag and drop straight from Explorer or the Desktop */
+      var hot = null;
+      ['dragenter', 'dragover'].forEach(function (ev) {
+        document.addEventListener(ev, function (e) {
+          var t = targetOf(e.target);
+          if (!t) return;
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'copy';
+          if (hot !== t) { if (hot) hot.classList.remove('drop-hot'); hot = t; t.classList.add('drop-hot'); }
+        });
+      });
+      document.addEventListener('dragleave', function (e) {
+        if (hot && !hot.contains(e.relatedTarget)) { hot.classList.remove('drop-hot'); hot = null; }
+      });
+      document.addEventListener('drop', function (e) {
+        var t = targetOf(e.target);
+        if (hot) { hot.classList.remove('drop-hot'); hot = null; }
+        if (!t) return;
+        e.preventDefault();
+        upload(t.dataset.slot, e.dataTransfer.files[0]);
+      });
+      /* stop the browser opening images dropped anywhere else */
+      document.addEventListener('dragover', function (e) { e.preventDefault(); });
+      document.addEventListener('drop', function (e) { if (!targetOf(e.target)) e.preventDefault(); });
+
+      /* keep your place across the reload */
+      var y = sessionStorage.getItem('studioScroll');
+      if (y !== null) {
+        sessionStorage.removeItem('studioScroll');
+        window.scrollTo(0, parseInt(y, 10));
+      }
+    }
+  })();
+</script>
+
+</body>
+</html>

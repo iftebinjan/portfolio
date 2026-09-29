@@ -1,0 +1,14 @@
+# Local editing tool state
+.studio/
+
+# Editor / agent config
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+
+# Working backups (kept locally, not published)
+*.bak
+portfolio.backup.html
+images-original/
